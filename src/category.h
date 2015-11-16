@@ -19,6 +19,7 @@ typedef struct zlog_category_s {
 	unsigned char level_bitmap_backup[32];
 	zc_arraylist_t *fit_rules;
 	zc_arraylist_t *fit_rules_backup;
+    int             verbLevel;
 } zlog_category_t;
 
 zlog_category_t *zlog_category_new(const char *name, zc_arraylist_t * rules);

@@ -34,6 +34,26 @@ static zlog_category_t *zlog_default_category;
 static size_t zlog_env_reload_conf_count;
 static int zlog_env_is_init = 0;
 static int zlog_env_init_version = 0;
+
+int zlog_set_verbosity_level(zlog_category_t * category, int level)
+{
+    if( category )
+    {
+        if( level >= 1 && level <= 254 )
+        {
+            pthread_rwlock_wrlock(&zlog_env_lock);
+            category->verbLevel = level;
+            pthread_rwlock_unlock(&zlog_env_lock);
+        }
+        else
+            zc_error("zlog_set_verbosity_level fail, level out of range");
+    }
+    else
+        zc_error("zlog_set_verbosity_level fail, category == NULL");    
+
+    return -1;
+}
+
 /*******************************************************************************/
 /* inner no need thread-safe */
 static void zlog_fini_inner(void)
@@ -632,6 +652,9 @@ void vzlog(zlog_category_t * category,
 
 	pthread_rwlock_rdlock(&zlog_env_lock);
 
+    if( level < category->verbLevel )
+        goto exit;
+
 	if (!zlog_env_is_init) {
 		zc_error("never call zlog_init() or dzlog_init() before");
 		goto exit;
@@ -678,6 +701,9 @@ void hzlog(zlog_category_t *category,
 	if (zlog_category_needless_level(category, level)) return;
 
 	pthread_rwlock_rdlock(&zlog_env_lock);
+
+    if( level < category->verbLevel )
+        goto exit;
 
 	if (!zlog_env_is_init) {
 		zc_error("never call zlog_init() or dzlog_init() before");
@@ -834,6 +860,9 @@ void zlog(zlog_category_t * category,
 	if (category && zlog_category_needless_level(category, level)) return;
 
 	pthread_rwlock_rdlock(&zlog_env_lock);
+
+    if( level < category->verbLevel )
+        goto exit;
 
 	if (!zlog_env_is_init) {
 		zc_error("never call zlog_init() or dzlog_init() before");

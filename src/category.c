@@ -131,6 +131,7 @@ zlog_category_t *zlog_category_new(const char *name, zc_arraylist_t * rules)
 	}
 	strcpy(a_category->name, name);
 	a_category->name_len = len;
+	a_category->verbLevel = 80; // ZLOG_LEVEL_WARN
 	if (zlog_category_obtain_rules(a_category, rules)) {
 		zc_error("zlog_category_fit_rules fail");
 		goto err;

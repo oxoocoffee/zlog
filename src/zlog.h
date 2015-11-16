@@ -89,6 +89,8 @@ typedef enum {
 	ZLOG_LEVEL_FATAL = 120
 } zlog_level; 
 
+void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog_level
+
 #if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L
 # if defined __GNUC__ && __GNUC__ >= 2
 #  define __func__ __FUNCTION__
@@ -99,6 +101,9 @@ typedef enum {
 
 #if defined __STDC_VERSION__ && __STDC_VERSION__ >= 199901L
 /* zlog macros */
+#define zlog_msg(cat, ...) \
+	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	0, __VA_ARGS__)
 #define zlog_fatal(cat, ...) \
 	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_FATAL, __VA_ARGS__)
@@ -138,6 +143,9 @@ typedef enum {
 	ZLOG_LEVEL_DEBUG, __VA_ARGS__)
 #elif defined __GNUC__
 /* zlog macros */
+#define zlog_msg(cat, format, args...) \
+	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	0, format, ##args)
 #define zlog_fatal(cat, format, args...) \
 	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_FATAL, format, ##args)
