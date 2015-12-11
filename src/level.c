@@ -45,20 +45,22 @@ static int syslog_level_atoi(char *str)
 
 	if (STRICMP(str, ==, "LOG_EMERG"))
 		return LOG_EMERG;
-	if (STRICMP(str, ==, "LOG_ALERT"))
+	else if (STRICMP(str, ==, "LOG_ALERT"))
 		return LOG_ALERT;
-	if (STRICMP(str, ==, "LOG_CRIT"))
+	else if (STRICMP(str, ==, "LOG_CRIT"))
 		return LOG_CRIT;
-	if (STRICMP(str, ==, "LOG_ERR"))
+	else if (STRICMP(str, ==, "LOG_ERR"))
 		return LOG_ERR;
-	if (STRICMP(str, ==, "LOG_WARNING"))
+	else if (STRICMP(str, ==, "LOG_WARNING"))
 		return LOG_WARNING;
-	if (STRICMP(str, ==, "LOG_NOTICE"))
+	else if (STRICMP(str, ==, "LOG_NOTICE"))
 		return LOG_NOTICE;
-	if (STRICMP(str, ==, "LOG_INFO"))
+	else if (STRICMP(str, ==, "LOG_INFO"))
 		return LOG_INFO;
-	if (STRICMP(str, ==, "LOG_DEBUG"))
+	else if (STRICMP(str, ==, "LOG_DEBUG"))
 		return LOG_DEBUG;
+	else if (STRICMP(str, ==, "LOG_MSG"))
+		return LOG_NOTICE;
 
 	zc_error("wrong syslog level[%s]", str);
 	return -187;

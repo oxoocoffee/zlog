@@ -86,7 +86,8 @@ typedef enum {
 	ZLOG_LEVEL_NOTICE = 60,
 	ZLOG_LEVEL_WARN = 80,
 	ZLOG_LEVEL_ERROR = 100,
-	ZLOG_LEVEL_FATAL = 120
+	ZLOG_LEVEL_FATAL = 120,
+	ZLOG_LEVEL_MSG = 255
 } zlog_level; 
 
 void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog_level
@@ -103,7 +104,7 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 /* zlog macros */
 #define zlog_msg(cat, ...) \
 	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
-	0, __VA_ARGS__)
+	ZLOG_LEVEL_MSG,  __VA_ARGS__)
 #define zlog_fatal(cat, ...) \
 	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_FATAL, __VA_ARGS__)
@@ -123,6 +124,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_DEBUG, __VA_ARGS__)
 /* dzlog macros */
+#define dzlog_msg(...) \
+	dzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MSG, __VA_ARGS__)
 #define dzlog_fatal(...) \
 	dzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_FATAL, __VA_ARGS__)
@@ -145,7 +149,7 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 /* zlog macros */
 #define zlog_msg(cat, format, args...) \
 	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
-	0, format, ##args)
+	ZLOG_LEVEL_MSG, format, ##args)
 #define zlog_fatal(cat, format, args...) \
 	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_FATAL, format, ##args)
@@ -165,6 +169,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_DEBUG, format, ##args)
 /* dzlog macros */
+#define dzlog_msg(format, args...) \
+	dzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MSG, format, ##args)
 #define dzlog_fatal(format, args...) \
 	dzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_FATAL, format, ##args)
@@ -186,6 +193,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 #endif
 
 /* vzlog macros */
+#define vzlog_msg(cat, format, args) \
+	vzlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MSG, format, args)
 #define vzlog_fatal(cat, format, args) \
 	vzlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_FATAL, format, args)
@@ -206,6 +216,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 	ZLOG_LEVEL_DEBUG, format, args)
 
 /* hzlog macros */
+#define hzlog_msg(cat, buf, buf_len) \
+	hzlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MSG, buf, buf_len)
 #define hzlog_fatal(cat, buf, buf_len) \
 	hzlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_FATAL, buf, buf_len)
@@ -227,6 +240,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 
 
 /* vdzlog macros */
+#define vdzlog_msg(format, args) \
+	vdzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MSG, format, args)
 #define vdzlog_fatal(format, args) \
 	vdzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_FATAL, format, args)
@@ -247,6 +263,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 	ZLOG_LEVEL_DEBUG, format, args)
 
 /* hdzlog macros */
+#define hdzlog_msg(buf, buf_len) \
+	hdzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MSG, buf, buf_len)
 #define hdzlog_fatal(buf, buf_len) \
 	hdzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_FATAL, buf, buf_len)

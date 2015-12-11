@@ -50,7 +50,7 @@ static int zlog_level_list_set_default(zc_arraylist_t *levels)
 	|| zlog_level_list_set(levels, "ERROR = 100, LOG_ERR")
 	|| zlog_level_list_set(levels, "FATAL = 120, LOG_ALERT")
 	|| zlog_level_list_set(levels, "UNKNOWN = 254, LOG_ERR")
-	|| zlog_level_list_set(levels, "! = 255, LOG_INFO");
+	|| zlog_level_list_set(levels, "MSG = 255, LOG_MSG");
 }
 
 zc_arraylist_t *zlog_level_list_new(void)
@@ -105,7 +105,7 @@ zlog_level_t *zlog_level_list_get(zc_arraylist_t *levels, int l)
 #if 0
 	if ((l <= 0) || (l > 254)) {
 		/* illegal input from zlog() */
-		zc_error("l[%d] not in (0,254), set to UNKOWN", l);
+		zc_error("l[%d] not in (0,254), set to UNKNOWN", l);
 		l = 254;
 	}
 #endif
@@ -116,7 +116,7 @@ zlog_level_t *zlog_level_list_get(zc_arraylist_t *levels, int l)
 	} else {
 		/* empty slot */
 		zc_error("l[%d] not in (0,254), or has no level defined,"
-			"see configure file define, set to UNKOWN", l);
+			"see configure file define, set to UNKNOWN", l);
 		return zc_arraylist_get(levels, 254);
 	}
 }
