@@ -20,6 +20,15 @@
 #include "zc_defs.h"
 #include "event.h"
 
+#ifdef __linux__
+    #include <sys/syscall.h>
+    pid_t gettid(void);
+    #define getThreadID gettid
+    pid_t gettid(void) { return syscall(SYS_gettid); }
+#else
+    #define getThreadID pthread_self
+#endif
+
 void zlog_event_profile(zlog_event_t * a_event, int flag)
 {
 	zc_assert(a_event,);
@@ -79,7 +88,7 @@ zlog_event_t *zlog_event_new(int time_cache_count)
 	 * as in whole lifecycle event persists
 	 * even fork to oth pid, tid not change
 	 */
-	a_event->tid = pthread_self();
+	a_event->tid = getThreadID();
 
 	a_event->tid_str_len = sprintf(a_event->tid_str, "%lu", (unsigned long)a_event->tid);
 	a_event->tid_hex_str_len = sprintf(a_event->tid_hex_str, "0x%x", (unsigned int)a_event->tid);

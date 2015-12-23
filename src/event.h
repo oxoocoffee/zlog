@@ -1,6 +1,4 @@
 /*
- * This file is part of the zlog Library.
- *
  * Copyright (C) 2011 by Hardy Simpson <HardySimpson1984@gmail.com>
  *
  * Licensed under the LGPL v2.1, see the file COPYING in base directory.
@@ -14,6 +12,13 @@
 #include <pthread.h>    /* for pthread_t */
 #include <stdarg.h>     /* for va_list */
 #include "zc_defs.h"
+
+#ifdef __linux__
+    #define TID         pid_t 
+#else
+    #define TID         pthread_t 
+#endif
+
 
 typedef enum {
 	ZLOG_FMT = 0,
@@ -51,16 +56,16 @@ typedef struct {
 	struct tm time_local;	
 
 	zlog_time_cache_t *time_caches;
-	int time_cache_count;
+	int     time_cache_count;
 
-	pid_t pid;
-	pid_t last_pid;
-	char pid_str[30 + 1];
-	size_t pid_str_len;
+	pid_t   pid;
+	pid_t   last_pid;
+	char    pid_str[30 + 1];
+	size_t  pid_str_len;
 
-	pthread_t tid;
-	char tid_str[30 + 1];
-	size_t tid_str_len;
+	TID     tid;
+	char    tid_str[30 + 1];
+	size_t  tid_str_len;
 
 	char tid_hex_str[30 + 1];
 	size_t tid_hex_str_len;
