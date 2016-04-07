@@ -27,7 +27,7 @@ BINS=zlog-chk-conf
 LIBNAME=libzlog
 
 ZLOG_MAJOR=1
-ZLOG_MINOR=2
+ZLOG_MINOR=3
 
 # Fallback to gcc when $CC is not in $PATH.
 CC:=$(shell sh -c 'type $(CC) >/dev/null 2>/dev/null && echo $(CC) || echo gcc')

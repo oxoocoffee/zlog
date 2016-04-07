@@ -59,6 +59,8 @@ static int syslog_level_atoi(char *str)
 		return LOG_INFO;
 	else if (STRICMP(str, ==, "LOG_DEBUG"))
 		return LOG_DEBUG;
+    else if (STRICMP(str, ==, "LOG_MONITOR"))
+        return LOG_NOTICE;
 	else if (STRICMP(str, ==, "LOG_MSG"))
 		return LOG_NOTICE;
 

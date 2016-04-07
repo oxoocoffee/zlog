@@ -83,6 +83,7 @@ int zlog_set_record(const char *rname, zlog_record_fn record);
 typedef enum {
 	ZLOG_LEVEL_DEBUG = 20,
 	ZLOG_LEVEL_INFO = 40,
+	ZLOG_LEVEL_MONITOR = 30,
 	ZLOG_LEVEL_NOTICE = 60,
 	ZLOG_LEVEL_WARN = 80,
 	ZLOG_LEVEL_ERROR = 100,
@@ -117,6 +118,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 #define zlog_notice(cat, ...) \
 	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_NOTICE, __VA_ARGS__)
+#define zlog_monitor(cat, ...) \
+	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MONITOR, __VA_ARGS__)
 #define zlog_info(cat, ...) \
 	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_INFO, __VA_ARGS__)
@@ -139,6 +143,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 #define dzlog_notice(...) \
 	dzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_NOTICE, __VA_ARGS__)
+#define dzlog_monitor(...) \
+	dzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MONITOR, __VA_ARGS__)
 #define dzlog_info(...) \
 	dzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_INFO, __VA_ARGS__)
@@ -162,6 +169,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 #define zlog_notice(cat, format, args...) \
 	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_NOTICE, format, ##args)
+#define zlog_monitor(cat, format, args...) \
+	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MONITOR, format, ##args)
 #define zlog_info(cat, format, args...) \
 	zlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_INFO, format, ##args)
@@ -184,6 +194,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 #define dzlog_notice(format, args...) \
 	dzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_NOTICE, format, ##args)
+#define dzlog_monitor(format, args...) \
+	dzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MONITOR, format, ##args)
 #define dzlog_info(format, args...) \
 	dzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_INFO, format, ##args)
@@ -208,6 +221,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 #define vzlog_notice(cat, format, args) \
 	vzlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_NOTICE, format, args)
+#define vzlog_monitor(cat, format, args) \
+	vzlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MONITOR, format, args)
 #define vzlog_info(cat, format, args) \
 	vzlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_INFO, format, args)
@@ -231,6 +247,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 #define hzlog_notice(cat, buf, buf_len) \
 	hzlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_NOTICE, buf, buf_len)
+#define hzlog_monitor(cat, buf, buf_len) \
+	hzlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MONITOR, buf, buf_len)
 #define hzlog_info(cat, buf, buf_len) \
 	hzlog(cat, __FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_INFO, buf, buf_len)
@@ -255,6 +274,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 #define vdzlog_notice(format, args) \
 	vdzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_NOTICE, format, args)
+#define vdzlog_monitor(format, args) \
+	vdzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MONITOR, format, args)
 #define vdzlog_info(format, args) \
 	vdzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_INFO, format, args)
@@ -278,6 +300,9 @@ void zlog_set_verbosity_level(zlog_category_t * category, int level);    // zlog
 #define hdzlog_notice(buf, buf_len) \
 	hdzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_NOTICE, buf, buf_len)
+#define hdzlog_monitor(buf, buf_len) \
+	hdzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
+	ZLOG_LEVEL_MONITOR, buf, buf_len)
 #define hdzlog_info(buf, buf_len) \
 	hdzlog(__FILE__, sizeof(__FILE__)-1, __func__, sizeof(__func__)-1, __LINE__, \
 	ZLOG_LEVEL_INFO, buf, buf_len)
