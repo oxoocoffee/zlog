@@ -82,8 +82,8 @@ int zlog_set_record(const char *rname, zlog_record_fn record);
 
 typedef enum {
 	ZLOG_LEVEL_DEBUG = 20,
-	ZLOG_LEVEL_INFO = 40,
-	ZLOG_LEVEL_MONITOR = 30,
+	ZLOG_LEVEL_INFO = 30,
+	ZLOG_LEVEL_MONITOR = 40,
 	ZLOG_LEVEL_NOTICE = 60,
 	ZLOG_LEVEL_WARN = 80,
 	ZLOG_LEVEL_ERROR = 100,
