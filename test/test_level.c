@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 		return -2;
 	}
 
-    zlog_set_verbosity_level(zc, ZLOG_LEVEL_DEBUG);
+    zlog_set_verbosity_level(zc, ZLOG_LEVEL_MONITOR);
 
 	zlog_msg(zc, "hello, zlog - msg");
 	zlog_trace(zc, "hello, zlog - trace");
