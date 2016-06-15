@@ -167,7 +167,7 @@ static int zlog_get_mac(const char* ethDev, char* buffer)
                     *(ptr+3), *(ptr+4), *(ptr+5));
 
     return 0;
-#elif __linux
+#elif defined(linux) || defined(__linux)
     struct ifreq s;
 
     strcpy(s.ifr_name, ethDev);
