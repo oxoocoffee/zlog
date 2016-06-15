@@ -100,7 +100,8 @@ zlog_conf_t *zlog_conf_new(const char *confpath)
 	int has_conf_file = 0;
 	zlog_conf_t *a_conf = NULL;
 
-	a_conf = calloc(1, sizeof(zlog_conf_t));
+    a_conf = calloc(1, sizeof(zlog_conf_t));
+
 	if (!a_conf) {
 		zc_error("calloc fail, errno[%d]", errno);
 		return NULL;
@@ -403,7 +404,8 @@ static int zlog_conf_parse_line(zlog_conf_t * a_conf, char *line, int *section)
 	}
 
 	/* process detail */
-	switch (*section) {
+    switch (*section)
+    {
 	case 1:
 		memset(name, 0x00, sizeof(name));
 		memset(value, 0x00, sizeof(value));
@@ -452,20 +454,29 @@ static int zlog_conf_parse_line(zlog_conf_t * a_conf, char *line, int *section)
 			a_conf->fsync_period = zc_parse_byte_size(value);
 		} else {
 			zc_error("name[%s] is not any one of global options", name);
-			if (a_conf->strict_init) return -1;
+
+            if (a_conf->strict_init)
+                return -1;
 		}
 		break;
+
 	case 2:
 		if (zlog_level_list_set(a_conf->levels, line)) {
 			zc_error("zlog_level_list_set fail");
-			if (a_conf->strict_init) return -1;
+
+            if (a_conf->strict_init)
+                return -1;
 		}
 		break;
+
 	case 3:
 		a_format = zlog_format_new(line, &(a_conf->time_cache_count));
 		if (!a_format) {
 			zc_error("zlog_format_new fail [%s]", line);
-			if (a_conf->strict_init) return -1;
+
+            if (a_conf->strict_init)
+                return -1;
+
 			else break;
 		}
 		if (zc_arraylist_add(a_conf->formats, a_format)) {
@@ -474,6 +485,7 @@ static int zlog_conf_parse_line(zlog_conf_t * a_conf, char *line, int *section)
 			return -1;
 		}
 		break;
+
 	case 4:
 		a_rule = zlog_rule_new(line,
 			a_conf->levels,
@@ -485,15 +497,20 @@ static int zlog_conf_parse_line(zlog_conf_t * a_conf, char *line, int *section)
 
 		if (!a_rule) {
 			zc_error("zlog_rule_new fail [%s]", line);
-			if (a_conf->strict_init) return -1;
+
+            if (a_conf->strict_init)
+                return -1;
+
 			else break;
 		}
+
 		if (zc_arraylist_add(a_conf->rules, a_rule)) {
 			zlog_rule_del(a_rule);
 			zc_error("zc_arraylist_add fail");
 			return -1;
 		}
 		break;
+
 	default:
 		zc_error("not in any section");
 		return -1;

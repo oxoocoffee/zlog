@@ -27,6 +27,8 @@
 #define FILE_NEWLINE "\n"
 #define FILE_NEWLINE_LEN 1
 
+#define ETHR_MAX_NAME 64
+
 #include <string.h>
 #include <strings.h>
 

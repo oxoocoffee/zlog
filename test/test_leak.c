@@ -16,7 +16,6 @@
 
 int main(int argc, char** argv)
 {
-	int rc;
 	int k;
 	int i;
 
@@ -25,28 +24,27 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	rc = zlog_init("test_leak.conf");
+	zlog_init("test_leak.conf");
 
 	k = atoi(argv[1]);
 	while (k-- > 0) {
 		i = rand();
 		switch (i % 4) {
 		case 0:
-			rc = dzlog_init("test_leak.conf", "xxx");
+			dzlog_init("test_leak.conf", "xxx");
 			dzlog_info("init");
 			break;
 		case 1:
-			rc = zlog_reload(NULL);
+			zlog_reload(NULL);
 			dzlog_info("reload null");
 			break;
 		case 2:
-			rc = zlog_reload("test_leak.2.conf");
+			zlog_reload("test_leak.2.conf");
 			dzlog_info("reload 2");
 			break;
 		case 3:
 			zlog_fini();
 			printf("fini\n");
-	//		printf("zlog_finish\tj=[%d], rc=[%d]\n", j, rc);
 			break;
 		}
 	}

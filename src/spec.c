@@ -17,6 +17,15 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <net/if.h>
+#include <resolv.h>
+
+#ifdef __APPLE__
+#include <net/if_dl.h>
+#include <sys/sysctl.h>
+#endif
 
 #include "conf.h"
 #include "spec.h"
@@ -112,6 +121,87 @@ static int zlog_spec_write_us(zlog_spec_t * a_spec, zlog_thread_t * a_thread, zl
 		gettimeofday(&(a_thread->event->time_stamp), NULL);
 	}
 	return zlog_buf_printf_dec32(a_buf, a_thread->event->time_stamp.tv_usec, 6);
+}
+
+static int zlog_get_mac(const char* ethDev, char* buffer)
+{
+#ifdef __APPLE__
+    int			         mib[6];
+    size_t               len;
+    char			    *buf;
+    unsigned char		*ptr;
+    struct if_msghdr	*ifm;
+    struct sockaddr_dl	*sdl;
+
+    mib[0] = CTL_NET;
+    mib[1] = AF_ROUTE;
+    mib[2] = 0;
+    mib[3] = AF_LINK;
+    mib[4] = NET_RT_IFLIST;
+
+    if ((mib[5] = if_nametoindex(ethDev)) == 0) {
+        zc_error("zlog_get_mac eth[%s] fail", ethDev);
+        return -1;
+    }
+
+    if (sysctl(mib, 6, NULL, &len, NULL, 0) < 0) {
+        zc_error("zlog_get_mac sysctl 1 error");
+        return -2;
+    }
+
+    if ((buf = (char*)malloc(len)) == NULL) {
+        zc_error("zlog_get_mac malloc error");
+        return -3;
+    }
+
+    if (sysctl(mib, 6, buf, &len, NULL, 0) < 0) {
+        zc_error("zlog_get_mac sysctl 2 error");
+        return -4;
+    }
+
+    ifm = (struct if_msghdr *)buf;
+    sdl = (struct sockaddr_dl *)(ifm + 1);
+    ptr = (unsigned char *)LLADDR(sdl);
+    sprintf(buffer, "%02X%02X%02X%02X%02X%02X",
+                    *ptr, *(ptr+1), *(ptr+2),
+                    *(ptr+3), *(ptr+4), *(ptr+5));
+
+    return 0;
+#elif __linux
+    struct ifreq s;
+
+    strcpy(s.ifr_name, ethDev);
+
+    int fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP);
+
+    if( fd < 0)
+        return -1;
+
+    int retVal = ioctl(fd, SIOCGIFHWADDR, &s);
+
+    if (retVal == 0)
+    {
+        for (int i = 0; i < 6; ++i)
+        {
+            sprintf(buffer, "%02X", (unsigned char) s.ifr_addr.sa_data[i]);
+            buffer += 2;
+        }
+    }
+
+    close(fd);
+
+    return retVal;
+#endif
+}
+
+static int zlog_spec_write_eth(zlog_spec_t * a_spec, zlog_thread_t * a_thread, zlog_buf_t * a_buf)
+{
+    char macBuffer[ETHR_MAX_NAME] = {0};
+
+    if( zlog_get_mac(a_spec->eth_dev_name, macBuffer) == 0)
+        return zlog_buf_append(a_buf, macBuffer, strlen(macBuffer));
+    else
+        return zlog_buf_append(a_buf, "000000000000", 17);
 }
 
 static int zlog_spec_write_mdc(zlog_spec_t * a_spec, zlog_thread_t * a_thread, zlog_buf_t * a_buf)
@@ -418,6 +508,16 @@ static int zlog_spec_gen_archive_path_reformat(zlog_spec_t * a_spec, zlog_thread
 		a_spec->left_adjust, a_spec->min_width, a_spec->max_width);
 }
 
+static int index_of(const char *string, char search)
+{
+    const char *moved_string = strchr(string, search);
+
+    if (moved_string)
+        return moved_string - string;
+
+    return -1;
+}
+
 /*******************************************************************************/
 static int zlog_spec_parse_print_fmt(zlog_spec_t * a_spec)
 {
@@ -562,7 +662,32 @@ zlog_spec_t *zlog_spec_new(char *pattern_start, char **pattern_next, int *time_c
 			a_spec->len = p - a_spec->str;
 			a_spec->write_buf = zlog_spec_write_us;
 			break;
-		}
+        } else if (STRNCMP(p, ==, "eth", 3)) {
+            p += 3;
+
+            if( *p != '(')
+            {
+                zc_error("str[%s] in wrong format (eth), p[%c]", a_spec->str, *p);
+                goto err;
+            }
+
+            int idx = index_of(p+1, ')');
+
+            if( idx == -1 || idx > ETHR_MAX_NAME)
+            {
+                zc_error("str[%s] in wrong format (eth), p[%c]", a_spec->str, *p);
+                goto err;
+            }
+
+            strncpy(a_spec->eth_dev_name, p+1, idx);
+
+            p += (idx + 2);
+
+            *pattern_next = p;
+            a_spec->len = p - a_spec->str;
+            a_spec->write_buf = zlog_spec_write_eth;
+            break;
+        }
 
 		*pattern_next = p + 1;
 		a_spec->len = p - a_spec->str + 1;

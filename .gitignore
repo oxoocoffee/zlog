@@ -23,6 +23,7 @@ depcomp
 .deps
 install-sh
 .libs
+*.creator.user
 libtool
 libzlog.so*
 libzlog.a*

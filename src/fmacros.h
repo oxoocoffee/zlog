@@ -14,7 +14,9 @@
 #define _XOPEN_SOURCE
 #endif
 
-#define _LARGEFILE_SOURCE
-#define _FILE_OFFSET_BITS 64
+#ifndef _LARGEFILE_SOURCE
+	#define _LARGEFILE_SOURCE
+	#define _FILE_OFFSET_BITS 64
+#endif
 
 #endif

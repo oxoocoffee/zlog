@@ -65,22 +65,33 @@ static void zlog_fini_inner(void)
 	 * also key not init will cause a core dump
 	 */
 	
-	if (zlog_env_categories) zlog_category_table_del(zlog_env_categories);
+    if (zlog_env_categories)
+        zlog_category_table_del(zlog_env_categories);
+
 	zlog_env_categories = NULL;
 	zlog_default_category = NULL;
-	if (zlog_env_records) zlog_record_table_del(zlog_env_records);
+
+    if (zlog_env_records)
+        zlog_record_table_del(zlog_env_records);
+
 	zlog_env_records = NULL;
-	if (zlog_env_conf) zlog_conf_del(zlog_env_conf);
+
+    if (zlog_env_conf)
+        zlog_conf_del(zlog_env_conf);
+
 	zlog_env_conf = NULL;
 	return;
 }
 
 static void zlog_clean_rest_thread(void)
 {
-	zlog_thread_t *a_thread;
-	a_thread = pthread_getspecific(zlog_thread_key);
-	if (!a_thread) return;
+    zlog_thread_t *a_thread = (zlog_thread_t*)pthread_getspecific(zlog_thread_key);
+
+    if (!a_thread)
+        return;
+
 	zlog_thread_del(a_thread);
+
 	return;
 }
 

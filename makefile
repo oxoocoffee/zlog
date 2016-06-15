@@ -4,6 +4,7 @@ TARGETS=noopt 32bit
 
 all:
 	cd src && $(MAKE) $@
+	cd test && $(MAKE) $@
 
 install:
 	cd src && $(MAKE) $@
