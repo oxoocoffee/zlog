@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-    zlog_category_t *zc = zlog_get_category("clearwave");
+    zlog_category_t *zc = zlog_get_category("action");
 
 	if (!zc)
 	{

@@ -162,7 +162,7 @@ static int zlog_get_mac(const char* ethDev, char* buffer)
     ifm = (struct if_msghdr *)buf;
     sdl = (struct sockaddr_dl *)(ifm + 1);
     ptr = (unsigned char *)LLADDR(sdl);
-    sprintf(buffer, "%02X%02X%02X%02X%02X%02X",
+    sprintf(buffer, "%02x%02x%02x%02x%02x%02x",
                     *ptr, *(ptr+1), *(ptr+2),
                     *(ptr+3), *(ptr+4), *(ptr+5));
 
@@ -183,7 +183,7 @@ static int zlog_get_mac(const char* ethDev, char* buffer)
     {
         for (int i = 0; i < 6; ++i)
         {
-            sprintf(buffer, "%02X", (unsigned char) s.ifr_addr.sa_data[i]);
+            sprintf(buffer, "%02x", (unsigned char) s.ifr_addr.sa_data[i]);
             buffer += 2;
         }
     }
