@@ -27,15 +27,15 @@ BINS=zlog-chk-conf
 LIBNAME=libzlog
 
 ZLOG_MAJOR=1
-ZLOG_MINOR=3
+ZLOG_MINOR=4
 
 # Fallback to gcc when $CC is not in $PATH.
 CC:=$(shell sh -c 'type $(CC) >/dev/null 2>/dev/null && echo $(CC) || echo gcc')
-OPTIMIZATION?=
-#OPTIMIZATION?=-O2
+#OPTIMIZATION?=
+OPTIMIZATION?=-O2
 WARNINGS=-Wall -Werror -Wstrict-prototypes -fwrapv
-#DEBUG= -g -ggdb
-DEBUG?= -g 
+DEBUG= -g -ggdb
+#DEBUG?= -g 
 REAL_CFLAGS=$(OPTIMIZATION) -fPIC -pthread $(CFLAGS) $(WARNINGS) $(DEBUG)
 REAL_LDFLAGS=$(LDFLAGS) -lpthread
 

@@ -25,12 +25,12 @@ exe = 		\
 all     :       $(exe)
 
 $(exe)  :       %:%.o
-	gcc -g -o $@ $^ -L../src -lzlog -lpthread -Wl,-rpath ../src
-#gcc -O2 -g -o $@ $^ -L../src -lzlog -lpthread -Wl,-rpath ../src
+	gcc -O2 -g -o $@ $^ -L../src -lzlog -lpthread -Wl,-rpath ../src
+#	gcc -g -o $@ $^ -L../src -lzlog -lpthread -Wl,-rpath ../src
 
 .c.o	:
-	gcc -g -Wall -D_GNU_SOURCE -o $@ -c $< -I. -I../src
-#gcc -O2 -g -Wall -D_GNU_SOURCE -o $@ -c $< -I. -I../src
+	gcc -O2 -g -Wall -D_GNU_SOURCE -o $@ -c $< -I. -I../src
+#   gcc -g -Wall -D_GNU_SOURCE -o $@ -c $< -I. -I../src
 
 clean	:
 	rm -f press.log* *.o $(exe)

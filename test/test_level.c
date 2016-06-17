@@ -32,7 +32,9 @@ int main(int argc, char** argv)
     //zlog_set_verbosity_level(zc, ZLOG_LEVEL_MONITOR);
     zlog_set_verbosity_level(zc, ZLOG_LEVEL_DEBUG);
 
-    for(int i = 0; i < 1000; ++i)
+    int i;
+
+    for(i = 0; i < 1000; ++i)
     {
 	    zlog_msg(zc,     "hello, zlog - %s %d", "MSG", i);
 	    zlog_trace(zc,   "hello, zlog - %s %d", "TRACE", i);
