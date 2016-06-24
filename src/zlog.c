@@ -44,6 +44,7 @@ int zlog_set_verbosity_level(zlog_category_t * category, int level)
             pthread_rwlock_wrlock(&zlog_env_lock);
             category->verbLevel = level;
             pthread_rwlock_unlock(&zlog_env_lock);
+            return 0;
         }
         else
             zc_error("zlog_set_verbosity_level fail, level out of range");
