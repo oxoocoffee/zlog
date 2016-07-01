@@ -36,7 +36,6 @@ tags
 TAGS
 zlog-chk-conf
 zlog-*.tar.gz
-zlog.pc
 callgrind*
 err.log
 test_*
